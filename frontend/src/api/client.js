@@ -1,11 +1,14 @@
 import axios from 'axios'
 
+// VITE_API_BASE_URL 환경변수 사용 (dev: http://localhost:8000, prod: 배포 URL)
+const BASE_URL = (import.meta.env.VITE_API_BASE_URL ?? '') + '/api'
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: BASE_URL,
   timeout: 30000,
 })
 
-// 응답 에러 공통 처리
+// 응답 에러 공통 처리 — FastAPI detail 필드 추출
 api.interceptors.response.use(
   (res) => res,
   (err) => {
@@ -14,14 +17,14 @@ api.interceptors.response.use(
   }
 )
 
-// ── 영수증 API ───────────────────────────────────────────────────────────────
+// ── 영수증 API ────────────────────────────────────────────────────────────────
 
 export const uploadReceipt = (file) => {
   const formData = new FormData()
   formData.append('file', file)
   return api.post('/receipts/upload', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
-    timeout: 60000, // OCR 처리 시간 고려
+    timeout: 60000, // OCR 처리 시간 고려 (최대 60초)
   })
 }
 
