@@ -19,8 +19,11 @@ class Settings(BaseSettings):
     max_file_size: int = 10 * 1024 * 1024  # 10MB
     allowed_mime_types: List[str] = ["image/jpeg", "image/png", "application/pdf"]
 
-    # CORS
+    # CORS — 로컬 + 배포 환경
     cors_origins: List[str] = ["http://localhost:5173", "http://localhost:3000"]
+    # Vercel 프리뷰·프로덕션 URL 전체 허용 (*.vercel.app)
+    # 커스텀 도메인 사용 시 CORS_ORIGINS 환경변수에 추가
+    cors_origin_regex: str = r"https://.*\.vercel\.app"
 
 
 settings = Settings()
