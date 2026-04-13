@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "agent",
+            "prompt": "You received this tool event: $ARGUMENTS\n\nExtract the file_path from tool_input. Then follow these rules:\n\n1. If the modified file IS 'PRD_AI_영수증_지출관리.md' → do nothing and exit immediately.\n\n2. If the modified file is in 'backend/' or 'frontend/' AND has extension .py, .js, .jsx, .ts, or .tsx:\n   - Read the current 'PRD_AI_영수증_지출관리.md'\n   - Analyze what changed and how it affects the PRD content\n   - Update only the relevant PRD sections (예: API 엔드포인트, 기능, DB 스키마, 환경변수 등)\n   - Write concise, factual updates only\n\n3. Otherwise → do nothing and exit.\n\nIMPORTANT: Never update the PRD if the changed file is not a source code file.",
+            "timeout": 120,
+            "statusMessage": "PRD 동기화 확인 중..."
+          }
+        ]
+      }
+    ]
+  }
+}
